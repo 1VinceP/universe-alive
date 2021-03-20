@@ -1,0 +1,25 @@
+// text
+$font-xs: 12px;
+$font-sm: 14px;
+$font-lg: 24px;
+
+// colors
+$light-grey: #d8d8d8;
+$grey: rgb(107, 114, 128);
+$light-purple: rgb(124, 58, 237);
+$purple: purple;
+$indego: darkslateblue;
+$light-blue: #539df7;
+$blue: #3b82f6;
+$red: #ef4444;
+
+// layout
+$screen-padding: 30px;
+$radius: 3px;
+$header-height: 46px;
+
+// shadows
+$shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+$shadow-right: 2px 0px 3px 0px rgba(0, 0, 0, 0.1), 1px 0px 2px 0px rgba(0, 0, 0, 0.06);
+$shadow-up: 0px -2px 3px 0px rgba(0, 0, 0, 0.1), 0px -1px 2px 0px rgba(0, 0, 0, 0.06);
+$shadow-left: -2px 0px 3px 0px rgba(0, 0, 0, 0.1), -1px 0px 2px 0px rgba(0, 0, 0, 0.06);

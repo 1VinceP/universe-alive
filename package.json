@@ -1,15 +1,25 @@
 {
-  "name": "universe-alive",
+  "name": "rpg-universe-alive",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "seed": "node ./server/seed.js"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
+    "cookie-session": "^1.4.0",
     "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "firebase": "^8.3.0",
+    "helmet": "^4.4.1",
+    "ky": "^0.27.0",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.12.1",
     "register-service-worker": "^1.7.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
@@ -34,5 +44,6 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-0"
-  }
+  },
+  "main": "server/server.js"
 }
