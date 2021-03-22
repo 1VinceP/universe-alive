@@ -1,6 +1,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
-import GameCard from './GameCard.vue';
+import GameCard from '../../common/Card.vue';
 
 export default {
    name: 'landing-dash',

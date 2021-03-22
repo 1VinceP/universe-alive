@@ -5,6 +5,7 @@ export default {
 
    state: {
       user: {
+         username: 'Test User',
          uid: '12',
       },
       authError: '',

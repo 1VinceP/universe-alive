@@ -6,6 +6,7 @@ const express = require('express')
     , helmet = require('helmet')
     , chalk = require('chalk');
 
+const seed = require('./seed');
 const controllers = require('./controllers');
 
 const app = express();
@@ -22,6 +23,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
    console.log(chalk.magenta('mongoose connected to database'));
+   // seed(db);
    listen();
 });
 

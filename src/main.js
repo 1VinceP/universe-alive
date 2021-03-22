@@ -4,6 +4,7 @@ import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
+import { clickOutside } from './directives';
 import './reset.css';
 
 const firebaseConfig = {
@@ -18,4 +19,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-createApp(App).use(store).use(router).mount('#app');
+const app = createApp(App);
+
+app.directive('click-outside', clickOutside);
+app.use(store).use(router).mount('#app');

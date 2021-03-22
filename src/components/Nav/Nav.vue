@@ -1,10 +1,6 @@
 <script>
-import Tab from './Tab.vue';
-
 export default {
    name: 'dash-nav',
-
-   components: { Tab },
 
    data: () => ({
       collapsed: false,
@@ -14,7 +10,8 @@ export default {
 
 <template>
    <div :class="['nav', { collapsed }]">
-      <Tab @click="collapsed = !collapsed">{{ collapsed ? '&#8677;' : '&#8676;' }}</Tab>
+      <!-- <Tab @click="collapsed = !collapsed">{{ collapsed ? '&#8677;' : '&#8676;' }}</Tab> -->
+      <slot />
    </div>
 </template>
 
@@ -22,7 +19,8 @@ export default {
 .nav {
    height: calc(100vh - #{$header-height});
    width: 200px;
-   background: linear-gradient(lightblue, lightgreen);
+   min-width: 200px;
+   background: linear-gradient(midnightblue, orchid);
    display: flex;
    flex-direction: column;
    position: sticky;

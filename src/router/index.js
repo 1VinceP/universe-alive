@@ -26,11 +26,6 @@ const routes = [
             component: () => import('../views/Dashboard.vue'),
             children: [
                {
-                  path: '',
-                  name: 'landing-dash',
-                  component: () => import('../components/Dashboard/LandingDash/LandingDash.vue'),
-               },
-               {
                   path: '/admin',
                   name: 'admin-dash',
                },

@@ -1,14 +1,22 @@
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { Button } from '@/components/common';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import { Button, Dropdown } from '@/components/common';
 
 export default {
    name: 'home-header',
 
-   components: { Button },
+   components: { Button, Dropdown },
 
    computed: {
+      ...mapState('authentication', ['user']),
       ...mapGetters('authentication', ['isAuthenticated']),
+
+      userItems() {
+         return [
+            { label: 'Account Settings', route: '/accountsettings' },
+            { label: 'Logout', action: this.logout, style: { background: 'red' }, type: 'full' },
+         ];
+      },
    },
 
    methods: {
@@ -31,7 +39,12 @@ export default {
       <!-- <img src="" /> -->
       <span class="title">Universe Alive</span>
 
-      <div v-if="isAuthenticated"><Button @click="logout">Log out</Button></div>
+      <div v-if="isAuthenticated">
+         <!-- <Button secondary @click="logout">{{ user.username }}</Button> -->
+         <Dropdown :items="userItems">
+            {{ user.username }}
+         </Dropdown>
+      </div>
       <div v-else>
          <router-link to="/login" class="login">
             <Button link>Log in</Button>

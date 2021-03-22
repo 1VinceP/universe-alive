@@ -1,0 +1,25 @@
+{
+   "market": {
+      "timelineEffects": {
+         "name": "Timeline Effects",
+         "type": "Boolean",
+         "description": [
+            "If Timeline Effects are turned on, major events (geological, political, etc) will have large effect on the supply/demand of markets."
+         ]
+      },
+      "priceFluctuation": {
+         "name": "Price Fluctuation",
+         "type": "Boolean",
+         "description": [
+            "If Price Fluctuations are turned on, market prices will alter slightly based on supply and demand."
+         ]
+      },
+      "itemVariance": {
+         "name": "Item Variance",
+         "type": "Boolean",
+         "description": [
+            "If Item Variance is turned on, each market will only supply a subset of all available items based on local population, technology, wealth, etc."
+         ]
+      }
+   }
+}

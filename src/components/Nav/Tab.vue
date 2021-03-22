@@ -23,17 +23,18 @@ export default {
 .tab {
    width: 100%;
    height: 46px;
+   // background: rgba(255, 255, 255, 0.4);
    display: flex;
    justify-content: space-between;
    align-items: center;
    padding: 0px 10px;
    font-size: $font-sm;
+   color: white;
    cursor: pointer;
    transition: all .15s ease-in-out;
    &:hover {
-      // background: $light-blue;
-      // color: white;
-      box-shadow: $shadow;
+      // background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.2);
    }
    &.collapsed {
       justify-content: center;
