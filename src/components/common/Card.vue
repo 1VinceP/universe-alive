@@ -3,7 +3,6 @@ export default {
    name: 'card',
 
    props: {
-      // game: { type: Object, default: () => ({}) },
       image: { type: String, default: '' },
       title: { type: String, default: '' },
       subtitle: { type: String, default: '' },
