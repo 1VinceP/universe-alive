@@ -13,6 +13,10 @@ const app = express();
 
 app.use(helmet());
 app.use(express.json());
+app.use((req, _, next) => {
+   console.log('request: ', req.url);
+   next();
+});
 
 mongoose.connect(process.env.MONGOOSE_CONNECTION, {
    useCreateIndex: true,
@@ -32,6 +36,7 @@ app.get('/', (_, res) => res.status(200).send('Hello world'));
 /* GAMES */
 app.get('/games', controllers.game.getAllGames);
 app.get('/games/:id', controllers.game.getUserGames);
+app.get('/game/key/:key', controllers.game.getGameByGameKey);
 
 function listen() {
    const port = process.env.PORT || 8081;

@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-   <router-view/>
+   <router-view id="app" />
 </template>
 
 <style lang="scss">

@@ -37,6 +37,7 @@ module.exports = {
             'function-paren-newline': 0,
             'no-else-return': 0,
             'max-len': 0,
+            'no-underscore-dangle': 0,
          },
       },
    ],

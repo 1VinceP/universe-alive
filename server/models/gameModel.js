@@ -6,6 +6,11 @@ const BooleanSetting = { type: Boolean, default: false };
 
 const game = new mongoose.Schema({
    owner_id: String,
+   game_key: {
+      type: String,
+      minlength: 12,
+      maxlength: 12,
+   },
    name: String,
    players: [{
       uid: String,
@@ -14,12 +19,12 @@ const game = new mongoose.Schema({
    }],
    createdOn: { type: Date, default: Date.now, immutable: true },
    lastOpened: { type: Date, default: Date.now },
-   items: ObjectId,
-   npcs: ObjectId,
-   timeline: ObjectId,
+   items_id: ObjectId,
+   npcs_id: ObjectId,
+   timeline_id: ObjectId,
    party: {
-      characters: [ObjectId],
-      npcs: [ObjectId],
+      character_ids: [ObjectId],
+      npc_ids: [ObjectId],
       party_loot: [itemSchemaJoin],
    },
    settings: {

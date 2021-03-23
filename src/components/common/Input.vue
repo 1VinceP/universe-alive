@@ -29,7 +29,7 @@ export default {
       </div>
       <input
          ref="input"
-         class="input"
+         :class="['input', { hasError: error }]"
          :type="password ? 'password' : ''"
          :value="modelValue"
          :placeholder="placeholder"
@@ -61,11 +61,12 @@ export default {
    .input {
       height: 30px;
       width: 100%;
-      margin: 2px 0px;
+      margin: 3px 0px;
       border: 1px solid $grey;
       border-radius: $radius;
       outline: none;
       &:focus { border: 2px solid $blue; }
+      &.hasError { border-color: $red; }
    }
 
    .error {

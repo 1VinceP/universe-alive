@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const games = [
    {
       owner_id: '10',
+      game_key: '123456789012',
       name: 'Test Game',
       players: [
          {
@@ -23,12 +24,12 @@ const games = [
             gmControl: false,
          },
       ],
-      items: '101000000000',
-      npcs: '201000000000',
-      timeline: '301000000000',
+      items_id: '101000000000',
+      npcs_id: '201000000000',
+      timeline_id: '301000000000',
       party: {
-         characters: ['111000000000', '112000000000', '113000000000'],
-         npcs: [],
+         character_ids: ['111000000000', '112000000000', '113000000000'],
+         npc_ids: [],
          party_loot: [],
       },
       settings: {
@@ -41,17 +42,18 @@ const games = [
    },
    {
       owner_id: '11',
+      game_key: '123123123123',
       name: 'Test Game 2',
       players: [{
          uid: '10',
          character_id: '110000000000',
          gmControl: true,
       }],
-      items: '102000000000',
-      npcs: '202000000000',
-      timeline: '302000000000',
+      items_id: '102000000000',
+      npcs_id: '202000000000',
+      timeline_id: '302000000000',
       party: {
-         characters: ['111000000000'],
+         character_ids: ['111000000000'],
       },
       settings: {
          market: {
