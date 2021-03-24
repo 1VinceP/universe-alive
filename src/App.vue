@@ -37,4 +37,8 @@ export default {
       }
    }
 }
+
+.global-link {
+   text-decoration: none;
+}
 </style>

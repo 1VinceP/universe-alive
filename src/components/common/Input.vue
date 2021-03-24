@@ -8,6 +8,12 @@ export default {
       }
    },
 
+   methods: {
+      handleEnter(e) {
+         console.log(e);
+      },
+   },
+
    props: {
       modelValue: { type: String, default: '' },
       placeholder: { type: String, default: '' },
@@ -17,12 +23,13 @@ export default {
       password: { type: Boolean, default: false },
       autofocus: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
+      onEnter: { type: Function, default: () => {} },
    },
 };
 </script>
 
 <template>
-   <div :class="['wrapper', { full }]">
+   <div :class="['input-wrapper', { full }]">
       <div v-show="label" class="label">
          {{ label }}
          <div v-show="required" class="required">*</div>
@@ -34,13 +41,15 @@ export default {
          :value="modelValue"
          :placeholder="placeholder"
          @input="e => $emit('update:modelValue', e.target.value)"
+         @keypress.enter="onEnter"
       />
+      <div v-show="details" class="details">{{ details }}</div>
       <div v-show="error" class="error">{{ error }}</div>
    </div>
 </template>
 
 <style lang="scss" scoped>
-.wrapper {
+.input-wrapper {
    width: 260px;
    display: flex;
    flex-direction: column;
@@ -53,8 +62,8 @@ export default {
       text-align: left;
 
       .required {
-         color: $red;
          margin-left: 2px;
+         color: $red;
       }
    }
 
@@ -66,7 +75,14 @@ export default {
       border-radius: $radius;
       outline: none;
       &:focus { border: 2px solid $blue; }
+      &::placeholder { color: #999; }
       &.hasError { border-color: $red; }
+   }
+
+   .details {
+      text-align: left;
+      color: $grey;
+      font-size: $font-xs;
    }
 
    .error {

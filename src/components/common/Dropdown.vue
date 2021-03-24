@@ -25,7 +25,7 @@ export default {
    },
 
    props: {
-      items: { type: Array, default: () => ([]) },
+      label: { type: String, default: '' },
       align: { type: String, default: 'right' },
    },
 };
@@ -34,7 +34,7 @@ export default {
 <template>
    <div class="dropdown-container">
       <Button id="trigger" :class="{ open }" secondary @click="open = !open">
-         <slot />
+         {{ label }}
          <span class="caret" />
       </Button>
 
@@ -42,15 +42,7 @@ export default {
          :class="['dropdown-list', { right: align === 'right', left: align === 'left' }]"
          :style="{ ...alignment }"
       >
-         <Button v-for="(item, i) in items"
-            :key="i"
-            class="list-item"
-            :link="item.type !== 'full'"
-            :style="{ textAlign: item.type !== 'full' && 'left', ...item.style }"
-            @click="item.action"
-         >
-            {{ item.label }}
-         </Button>
+         <slot />
       </div>
    </div>
 </template>

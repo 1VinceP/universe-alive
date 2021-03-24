@@ -4,33 +4,31 @@ const chalk = require('chalk');
 
 const games = [
    {
-      owner_id: '10',
-      game_key: '123456789012',
+      ownerId: '10',
+      gameKey: '123456789012',
       name: 'Test Game',
       players: [
          {
             uid: '11',
-            character_id: '111000000000',
+            characterId: '111000000000',
             gmControl: false,
          },
          {
             uid: '12',
-            character_id: '112000000000',
+            characterId: '112000000000',
             gmControl: true,
          },
          {
             uid: '13',
-            character_id: '113000000000',
+            characterId: '113000000000',
             gmControl: false,
          },
       ],
-      items_id: '101000000000',
-      npcs_id: '201000000000',
-      timeline_id: '301000000000',
+      itemsId: '101000000000',
+      npcsId: '201000000000',
+      timelineId: '301000000000',
       party: {
-         character_ids: ['111000000000', '112000000000', '113000000000'],
-         npc_ids: [],
-         party_loot: [],
+         characterIds: ['111000000000', '112000000000', '113000000000'],
       },
       settings: {
          market: {
@@ -41,19 +39,19 @@ const games = [
       }
    },
    {
-      owner_id: '11',
-      game_key: '123123123123',
+      ownerId: '11',
+      gameKey: '123123123123',
       name: 'Test Game 2',
       players: [{
          uid: '10',
-         character_id: '110000000000',
+         characterId: '110000000000',
          gmControl: true,
       }],
-      items_id: '102000000000',
-      npcs_id: '202000000000',
-      timeline_id: '302000000000',
+      itemsId: '102000000000',
+      npcsId: '202000000000',
+      timelineId: '302000000000',
       party: {
-         character_ids: ['111000000000'],
+         characterIds: ['111000000000'],
       },
       settings: {
          market: {

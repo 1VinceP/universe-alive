@@ -32,9 +32,9 @@ export default {
    border: 1px solid $light-grey;
    border-radius: $radius;
    padding: 0px;
+   // box-shadow: $shadow;
    cursor: pointer;
    transition: all .1s ease-in-out;
-   &:hover { box-shadow: $shadow; }
    &:active { box-shadow: none; }
    &.red { border-color: darkred; }
    &.orange { border-color: firebrick; }

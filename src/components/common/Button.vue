@@ -8,6 +8,7 @@ export default {
 
    props: {
       id: { type: String, default: '' },
+      to: { type: String, default: '' },
       link: { type: Boolean, default: false },
       secondary: { type: Boolean, default: false },
       full: { type: Boolean, default: false },
@@ -19,7 +20,24 @@ export default {
 </script>
 
 <template>
-   <button
+   <router-link v-if="to" :to="to" class="button-router-wrapper">
+      <button
+         :id="id"
+         :class="['base-button', {
+            primary: !link && !secondary,
+            link,
+            secondary,
+            full,
+            sm,
+            disabled: disabled || loading,
+         }]"
+         :disabled="disabled || loading"
+      >
+         <Spinner v-if="loading" />
+         <slot v-else></slot>
+      </button>
+   </router-link>
+   <button v-else
       :id="id"
       :class="['base-button', {
          primary: !link && !secondary,
@@ -37,6 +55,21 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.button-router-wrapper:hover {
+   .base-button {
+      background: $light-blue;
+      &.link {
+         background: transparent;
+         color: $light-blue;
+      }
+      &.secondary {
+         background: transparent;
+         color: $light-blue;
+         border-color: $light-blue;
+      }
+   }
+}
+
 .base-button {
    height: 30px;
    background: $blue;

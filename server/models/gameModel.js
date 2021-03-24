@@ -5,27 +5,32 @@ const { ObjectId } = mongoose.Schema.Types;
 const BooleanSetting = { type: Boolean, default: false };
 
 const game = new mongoose.Schema({
-   owner_id: String,
-   game_key: {
+   ownerId: String,
+   gameKey: {
       type: String,
       minlength: 12,
       maxlength: 12,
    },
    name: String,
-   players: [{
-      uid: String,
-      character_id: ObjectId,
-      gmControl: { type: Boolean, default: false },
-   }],
+   open: { type: Boolean, default: true },
+   players: {
+      type: [{
+         uid: String,
+         character_id: ObjectId,
+         gmControl: { type: Boolean, default: false },
+      }],
+      default: [],
+   },
    createdOn: { type: Date, default: Date.now, immutable: true },
    lastOpened: { type: Date, default: Date.now },
-   items_id: ObjectId,
-   npcs_id: ObjectId,
-   timeline_id: ObjectId,
+   itemsId: ObjectId,
+   npcsId: ObjectId,
+   timelineId: ObjectId,
+   template: String,
    party: {
-      character_ids: [ObjectId],
-      npc_ids: [ObjectId],
-      party_loot: [itemSchemaJoin],
+      characterIds: { type: [ObjectId], default: [] },
+      npcIds: { type: [ObjectId], default: [] },
+      partyLoot: { type: [itemSchemaJoin], default: [] },
    },
    settings: {
       market: {

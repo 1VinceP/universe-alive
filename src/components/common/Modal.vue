@@ -81,8 +81,8 @@ export default {
 
 <style lang="scss" scoped>
 .modal-container {
-   width: 100%;
    height: 100vh;
+   width: 100%;
    background: rgba(0, 0, 0, 0.5);
    display: flex;
    justify-content: center;
@@ -94,7 +94,7 @@ export default {
    &.top { padding-top: 60px; }
 
    .modal {
-      min-height: 400px;
+      height: 400px;
       width: 650px;
       background: white;
       display: flex;
@@ -102,16 +102,20 @@ export default {
       border-radius: $radius;
       box-shadow: $shadow;
       &.sm {
+         height: auto;
          min-height: 200px;
          width: 475px;
       }
       &.lg {
-         min-height: 600px;
+         height: 600px;
          width: 975px;
       }
 
       header {
+         // fix janky resize with body
          height: 46px;
+         min-height: 46px;
+         max-height: 46px;
          width: 100%;
          display: flex;
          justify-content: space-between;
@@ -124,11 +128,12 @@ export default {
 
       .body {
          flex-grow: 1;
+         height: 100%;
          width: 100%;
          display: flex;
          justify-content: center;
          align-items: center;
-         padding: 20px;
+         padding: 0px 20px;
       }
 
       footer {

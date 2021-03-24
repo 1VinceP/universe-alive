@@ -54,7 +54,7 @@ export default {
 
          const action = isNew ? registerUser : loginUser;
          try {
-            const success = await action({ username, email, password });
+            const success = await action({ username, email, password, persist: this.remember });
             if (success) this.$router.push('/dashboard');
          } catch (error) {
             console.log(error.message);

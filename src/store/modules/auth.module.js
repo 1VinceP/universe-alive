@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import * as accountTypes from '@/constants/accountTypes.constants';
 
 export default {
    namespaced: true,
@@ -7,6 +8,8 @@ export default {
       user: {
          username: 'Test User',
          uid: '10',
+         accountType: 'admin',
+         email: 'dev@email.com',
       },
       authError: '',
       userError: '',
@@ -15,14 +18,11 @@ export default {
    },
 
    getters: {
-      isAuthenticated() {
-         // return !!state.user.email;
-         return true;
-      },
+      isAdmin: state => state.user.accountType === accountTypes.ADMIN,
    },
 
    actions: {
-      async registerUser({ state }, { email, password, username }) {
+      async registerUser({ state }, { email, password, username, persist }) {
          state.userLoading = true;
 
          try {
@@ -34,6 +34,10 @@ export default {
                lastLogin: currentDate,
                createdOn: currentDate,
             };
+
+            const persistType = persist ? firebase.auth.Auth.Persistence.LOCAL
+               : firebase.auth.Auth.Persistence.SESSION;
+            await firebase.auth().setPersistence(persistType);
 
             const { user: { uid } } = await firebase.auth().createUserWithEmailAndPassword(email, password);
             await firebase.database().ref(`users/${uid}`).set(user);

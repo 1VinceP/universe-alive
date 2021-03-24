@@ -8,15 +8,16 @@ export default {
 
    props: {
       label: { type: String, default: '' },
+      to: { type: String, default: '' },
    },
 };
 </script>
 
 <template>
-   <div :class="['tab', { collapsed }]">
+   <router-link :class="['global-link tab', { collapsed }]" :to="to">
       <slot></slot>
       <div>{{ !collapsed ? label : '' }}</div>
-   </div>
+   </router-link>
 </template>
 
 <style lang="scss" scoped>

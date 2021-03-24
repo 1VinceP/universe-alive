@@ -7,6 +7,8 @@ export default {
       game: {},
       loadingGame: false,
       loadingGameError: '',
+      creatingGame: false,
+      creatingGameError: '',
    },
 
    actions: {
@@ -19,6 +21,20 @@ export default {
             return true;
          } catch (error) {
             state.loadingGame = false;
+            return false;
+         }
+      },
+
+      async createGame({ state }, { gameData }) {
+         state.creatingGame = true;
+         try {
+            const game = await ky.post('/game', { json: gameData }).json();
+            state.creatingGame = false;
+            state.game = game;
+            return game._id;
+         } catch (error) {
+            state.creatingGame = false;
+            state.creatingGameError = error;
             return false;
          }
       },

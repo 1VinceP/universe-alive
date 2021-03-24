@@ -1,16 +1,20 @@
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { Button, Card, Input, Modal } from '@/components/common';
 import Nav, { NavTab } from '@/components/Nav';
 import useJoinGame from '@/components/Dashboard/setups/useJoinGame';
+import CreateGame from '@/components/Dashboard/LandingDash/CreateGame.vue';
 
 export default {
    name: 'dashboard',
 
-   components: { Button, Card, Input, Modal, Nav, NavTab },
+   components: {
+      Button, Card, Input, Modal, Nav, NavTab, CreateGame,
+   },
 
    computed: {
       ...mapState('authentication', ['user']),
+      ...mapGetters('authentication', ['isAdmin']),
       ...mapState('games', ['games']),
    },
 
@@ -55,25 +59,26 @@ export default {
 <template>
    <div class="dashboard">
       <Nav>
-         <NavTab>Dashboard</NavTab>
-         <NavTab>Guides</NavTab>
+         <NavTab v-if="isAdmin" to="/dashboard/admin">Admin Dashboard</NavTab>
+         <NavTab to="/dashboard">Games Dashboard</NavTab>
+         <NavTab to="/guides">Guides</NavTab>
       </Nav>
 
       <div class="body">
          <div class="action-bar">
-            <Modal>
-               <template v-slot:default="{ handleOpen }">
+            <CreateGame>
+               <template #default="{ handleOpen }">
                   <Button link @click="handleOpen">+ New Game</Button>
                </template>
-            </Modal>
+            </CreateGame>
          </div>
 
          <div class="content">
-            <router-link v-for="game in games"
+            <router-link class="global-link" v-for="game in games"
                :key="game._id"
                :to="`/dashboard/${gameAssoc(game)}/${game._id}`"
             >
-               <Card :game="game" :color="getColor(game)" />
+               <Card :title="game.name" :color="getColor(game)" />
             </router-link>
 
             <Modal
@@ -84,19 +89,25 @@ export default {
                @close="gameKey = ''"
                :hasError="!!gameKeyError || !gameKey"
             >
-               <template v-slot:default="{ handleOpen }">
+               <template #default="{ handleOpen }">
                   <Card title="Join existing game" color="blue" @click="handleOpen" />
                </template>
-               <template v-slot:body>
+               <template #body>
                   <Input
                      v-model="gameKey"
                      label="The GM can find the game key on their game's dashboard."
                      :error="gameKeyError"
                      :style="{ width: '100%' }"
+                     :onEnter="(!gameKeyError && gameKey) && findUnknownGameByKey"
                   />
                </template>
             </Modal>
-            <Card title="Create new game" color="green" />
+
+            <CreateGame>
+               <template #default="{ handleOpen }">
+                  <Card title="Create new game" color="green" @click="handleOpen" />
+               </template>
+            </CreateGame>
          </div>
       </div>
    </div>

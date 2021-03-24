@@ -40,9 +40,10 @@ export default {
       <span class="title">Universe Alive</span>
 
       <div v-if="isAuthenticated">
-         <!-- <Button secondary @click="logout">{{ user.username }}</Button> -->
-         <Dropdown :items="userItems">
-            {{ user.username }}
+         <Dropdown :label="user.username">
+            <Button link class="dropdown-item" to="/profile">Profile</Button>
+            <Button link class="dropdown-item" to="/accountsettings">Account Settings</Button>
+            <Button full class="dropdown-item logout" @click="logout">Logout</Button>
          </Dropdown>
       </div>
       <div v-else>
@@ -73,6 +74,15 @@ header {
 
    .title {
       font-size: $font-lg;
+   }
+
+   .dropdown-item {
+      text-align: left;
+
+      &.logout {
+         background: $red;
+         text-align: center;
+      }
    }
 
    .login {

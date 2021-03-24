@@ -25,7 +25,10 @@ module.exports = {
    getGameByGameKey: async (req, res) => {
       const { key } = req.params;
       try {
-         const game = await Game.findOne({ game_key: key });
+         // const game = await Game.findOne({ gameKey: key });
+         const game = await Game.findOne({
+            $and: [{ gameKey: key }, { open: true }],
+         });
          res.status(200).send(game);
       } catch (error) {
          res.status(400).send(error);
