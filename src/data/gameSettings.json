@@ -1,4 +1,28 @@
 {
+   "simulation": {
+      "bgsType": {
+         "name": "Background Simulation Type",
+         "type": "String",
+         "description": [
+            "The method for generating timeline advancements.",
+            "Passive: Large events happen rarely. Small changes made to background politics, militaries, etc.",
+            "Moderate: Large events happen occasionally. Background politics, military, etc has a larger impact on the world.",
+            "Aggressive: Large events happen frequently. Background politics, military, etc drives the world."
+         ],
+         "short": "The method for generating timeline advancements."
+      },
+      "fgsType": {
+         "name": "Foreground Simulation type",
+         "type": "String",
+         "description": [
+            "The method for generating story advancements.",
+            "Passive: Previous events will have a small effect on future events.",
+            "Moderate: Previous events will have a small effect on future events and the BGS.",
+            "Aggressive: Previous events will directly influence future events, and will have a large impact on the BGS."
+         ],
+         "short": "The method for generating story advancements."
+      }
+   },
    "market": {
       "timelineEffects": {
          "name": "Timeline Effects",

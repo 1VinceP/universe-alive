@@ -23,9 +23,17 @@ const routes = [
       },
    },
    {
+      path: '/accountsettings',
+      component: EmptyRouterView,
+      children: [{
+         path: '',
+         name: 'account-settings',
+         component: () => import('../views/AccountSettings.vue'),
+      }],
+   },
+   {
       path: '/dashboard',
       component: EmptyRouterView,
-      beforeEnter: to => console.log(to),
       children: [
          {
             path: '',
@@ -42,13 +50,15 @@ const routes = [
             },
          },
          {
-            path: 'gm',
+            path: 'gm/:id',
             name: 'gm-dash',
-            beforeEnter: (to, from, next) => {
-               const { game } = store.state;
-               const isGM = store.getters['/game/isGM'];
-               if (isGM) next();
-               else if (game.open) next(`/guest/${game._id}`);
+            component: () => import('../components/Dashboard/GMDash.vue'),
+            beforeEnter: async (to, from, next) => {
+               const gameId = to.params.id;
+               const relation = await store.dispatch('game/checkRelation', { gameId });
+               if (relation === 'owner') next();
+               else if (relation === 'player') next(`/player/${gameId}`);
+               else if (relation === 'guest') next(`/guest/${gameId}`);
                else next('/dashboard');
             },
          },
@@ -69,13 +79,14 @@ const router = createRouter({
    routes,
 });
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
+   console.log(store.state.authentication);
    if (to.meta.noAuth) {
       next();
-   } else if (store.state.authentication.user.uid) {
-      next();
    } else {
-      next('/login');
+      const session = await store.dispatch('authentication/checkSession');
+      if (session) next();
+      else next('/login');
    }
 });
 

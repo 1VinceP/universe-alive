@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-   <div class="dropdown-container">
+   <div v-click-outside="handleClickOutside" class="dropdown-container">
       <Button id="trigger" :class="{ open }" secondary @click="open = !open">
          {{ label }}
          <span class="caret" />
@@ -41,6 +41,7 @@ export default {
       <div v-show="open"
          :class="['dropdown-list', { right: align === 'right', left: align === 'left' }]"
          :style="{ ...alignment }"
+         @click="$nextTick(() => { open = false; })"
       >
          <slot />
       </div>

@@ -37,35 +37,19 @@ db.once('open', () => {
 });
 
 /* ///// AUTH ///// */
-app.get('/login/:uid', (req, res) => {
-   req.session.uid = req.params.uid;
-   req.session.remember = req.query.remember === 'true';
-   res.send('logged in');
-});
-app.post('/login', (req, res) => {
-   req.session.uid = req.body.uid;
-   req.session.remember = req.body.remember;
-   res.sendStatus(200);
-});
-app.get('/session', middleware.checkAuth, (req, res) => {
-   if (req.session.pageViews) {
-      req.session.pageViews++;
-      res.send(`You have visited ${req.session.pageViews} times. uid: ${req.session.uid}`);
-   } else {
-      req.session.pageViews = 1;
-      res.send(`Welcome to this page for the first time. uid: ${req.session.uid}`);
-   }
-});
-app.get('/logout', (req, res) => {
-   req.session = null;
-   res.clearCookie(cookieName);
-   res.send('You have been logged out');
-});
+app.get('/session', middleware.checkAuth, controllers.auth.testSession);
+app.get('/auth/session', controllers.auth.checkSession);
+app.post('/auth/login', controllers.auth.login);
+app.post('/auth/logout', (req, res) => controllers.auth.logout(req, res, cookieName));
 
 /* ///// GAMES ///// */
 app.get('/games', controllers.game.getAllGames);
 app.get('/games/:id', controllers.game.getUserGames);
+
+/* ///// GAME ///// */
 app.get('/game/key/:key', controllers.game.getGameByGameKey);
+app.get('/game/relation/:gameId', controllers.game.getGameRelation);
+app.post('/game', middleware.checkAuth, controllers.game.createGame);
 
 function listen() {
    const port = process.env.PORT || 8081;

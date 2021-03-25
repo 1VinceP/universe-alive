@@ -1,4 +1,5 @@
 import ky from 'ky';
+import { shortId } from '@/utils';
 
 export default {
    namespaced: true,
@@ -27,8 +28,9 @@ export default {
 
       async createGame({ state }, { gameData }) {
          state.creatingGame = true;
+         const body = { ...gameData, gameKey: shortId(12) };
          try {
-            const game = await ky.post('/game', { json: gameData }).json();
+            const game = await ky.post('/game', { json: body }).json();
             state.creatingGame = false;
             state.game = game;
             return game._id;
@@ -36,6 +38,16 @@ export default {
             state.creatingGame = false;
             state.creatingGameError = error;
             return false;
+         }
+      },
+
+      async checkRelation(_, { gameId }) {
+         try {
+            const relation = await ky.get(`/game/relation/${gameId}`).json();
+            return relation;
+         } catch (error) {
+            console.log(error);
+            return 'guest';
          }
       },
    },

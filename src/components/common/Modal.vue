@@ -3,6 +3,7 @@ import Button from './Button.vue';
 
 export default {
    name: 'base-modal',
+   emits: ['primary', 'close'],
 
    components: { Button },
 

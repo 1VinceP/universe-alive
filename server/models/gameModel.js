@@ -16,7 +16,7 @@ const game = new mongoose.Schema({
    players: {
       type: [{
          uid: String,
-         character_id: ObjectId,
+         characterId: ObjectId,
          gmControl: { type: Boolean, default: false },
       }],
       default: [],
@@ -26,6 +26,7 @@ const game = new mongoose.Schema({
    itemsId: ObjectId,
    npcsId: ObjectId,
    timelineId: ObjectId,
+   universeType: { type: String, default: 'planet', enum: ['planet', 'system', 'galaxy'] },
    template: String,
    party: {
       characterIds: { type: [ObjectId], default: [] },
@@ -33,6 +34,10 @@ const game = new mongoose.Schema({
       partyLoot: { type: [itemSchemaJoin], default: [] },
    },
    settings: {
+      simulation: {
+         bgsType: { type: String, default: 'moderate', enum: ['passive', 'moderate', 'aggressive'] },
+         fgsType: { type: String, default: 'moderate', enum: ['passive', 'moderate', 'aggressive'] },
+      },
       market: {
          timelineEffects: BooleanSetting, // if major timeline events can have large effects on the market
          priceFluctuation: BooleanSetting, // if market prices change based on supply/demand

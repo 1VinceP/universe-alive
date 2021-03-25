@@ -19,10 +19,12 @@ export default {
       placeholder: { type: String, default: '' },
       label: { type: String, default: '' },
       error: { type: String, default: '' },
+      details: { type: String, default: '' },
       full: { type: Boolean, default: false },
       password: { type: Boolean, default: false },
       autofocus: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
       onEnter: { type: Function, default: () => {} },
    },
 };
@@ -40,6 +42,7 @@ export default {
          :type="password ? 'password' : ''"
          :value="modelValue"
          :placeholder="placeholder"
+         :disabled="disabled"
          @input="e => $emit('update:modelValue', e.target.value)"
          @keypress.enter="onEnter"
       />
@@ -77,6 +80,7 @@ export default {
       &:focus { border: 2px solid $blue; }
       &::placeholder { color: #999; }
       &.hasError { border-color: $red; }
+      &[disabled] { background: #e4e4e4; }
    }
 
    .details {

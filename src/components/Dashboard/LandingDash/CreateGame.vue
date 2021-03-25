@@ -5,19 +5,21 @@ import { CheckboxGroup, Checkbox, Input, Modal, Select } from '@/components/comm
 import settingsData from '@/data/gameSettings.json';
 
 const initialState = () => ({
-   fields: {
-      name: '',
-      partnerIds: ['', ''],
-      universeType: 'planet',
-      bgsType: 'moderate',
-      fgsType: 'moderate',
-      template: '',
+   name: '',
+   universeType: 'planet',
+   template: '',
+   settings: {
+      simulation: {
+         bgsType: 'moderate',
+         fgsType: 'moderate',
+      },
       market: {
          timelineEffects: true,
          priceFluctuation: true,
          itemVariance: true,
       },
    },
+   generateUniverse: false,
 });
 
 export default {
@@ -32,12 +34,12 @@ export default {
 
       canSave() {
          const requiredValues = ['name', 'universeType'];
-         const requiredFields = filter(this.fields, (_, key) => requiredValues.includes(key));
+         const requiredFields = filter(this.$data, (_, key) => requiredValues.includes(key));
          return Object.values(requiredFields).every(field => !!field);
       },
 
       universeTypeDetails() {
-         return this.fields.universeType === 'galaxy'
+         return this.universeType === 'galaxy'
             && 'Creating a universe this large is resource intensive. You may experience slow-downs while generating timeline updates.';
       },
    },
@@ -54,7 +56,7 @@ export default {
       },
 
       getSimDesc(type) {
-         const simType = this.fields[type];
+         const simType = this[type];
          return simType === 'aggressive' ? 'Large events happen frequently. Large fluctuations.'
             : simType === 'moderate' ? 'Large events happen occasionally. Moderate fluctuations.'
                : simType === 'passive' ? 'Large events happen rarely. Small fluctuations.'
@@ -62,7 +64,8 @@ export default {
       },
 
       async onCreate() {
-         const createdId = await this.createGame(this.fields);
+         console.log(this.$data);
+         const createdId = await this.createGame({ gameData: this.$data });
          if (createdId) this.$router.push(`/dashboard/gm/${createdId}`);
       },
    },
@@ -76,7 +79,7 @@ export default {
       :loading="creatingGame"
       :hasError="!!creatingGameError || !canSave"
       primaryLabel="Create Game"
-      @primary="createGame(fields)"
+      @primary="onCreate"
       @close="onClose"
    >
       <template #default="{ handleOpen }">
@@ -85,9 +88,9 @@ export default {
       <template #body>
          <div class="create-game-body">
             <section class="container">
-               <Input v-model="fields.name" label="Game Name" required />
+               <Input v-model="name" label="Game Name" required />
                <Select
-                  v-model="fields.universeType"
+                  v-model="universeType"
                   label="Universe Type"
                   :details="universeTypeDetails"
                   noDefault
@@ -97,27 +100,28 @@ export default {
                   <option value="system">Solar System</option>
                   <option value="galaxy">Galaxy</option>
                </Select>
-               <Select v-model="fields.bgsType" label="BGS Type" :details="getSimDesc('bgsType')" noDefault required>
-                  <option value="moderate">Moderate</option>
+               <Select v-model="settings.simulation.bgsType" label="Background Simulation Type" :details="getSimDesc('bgsType')" noDefault required>
                   <option value="passive">Passive</option>
+                  <option value="moderate">Moderate</option>
                   <option value="aggressive">Aggressive</option>
                </Select>
-               <Select v-model="fields.fgsType" label="FGS Type" :details="getSimDesc('fgsType')" noDefault required>
-                  <option value="moderate">Moderate</option>
+               <Select v-model="settings.simulation.fgsType" label="Foreground Simulation Type" :details="getSimDesc('fgsType')" noDefault required>
                   <option value="passive">Passive</option>
+                  <option value="moderate">Moderate</option>
                   <option value="aggressive">Aggressive</option>
                </Select>
-               <Select v-model="fields.template" label="Template (can be changed later)">
+               <Select v-model="template" label="Template (can be changed later)">
                   <option value="dnd5e">D&#38;D 5e</option>
                   <option value="Genesys">Genesys</option>
                </Select>
             </section>
 
             <section class="container">
+               <Checkbox v-model="generateUniverse" label="Generate Universe" />
                <CheckboxGroup label="Market Settings">
-                  <Checkbox v-model="fields.market.timelineEffects" label="Timeline Effects" :details="getSettingDesc('market', 'timelineEffects')" />
-                  <Checkbox v-model="fields.market.priceFluctuation" label="Price Fluctuation" :details="getSettingDesc('market', 'priceFluctuation')" />
-                  <Checkbox v-model="fields.market.itemVariance" label="Item Variance" :details="getSettingDesc('market', 'itemVariance')" />
+                  <Checkbox v-model="settings.market.timelineEffects" label="Timeline Effects" :details="getSettingDesc('market', 'timelineEffects')" />
+                  <Checkbox v-model="settings.market.priceFluctuation" label="Price Fluctuation" :details="getSettingDesc('market', 'priceFluctuation')" />
+                  <Checkbox v-model="settings.market.itemVariance" label="Item Variance" :details="getSettingDesc('market', 'itemVariance')" />
                </CheckboxGroup>
             </section>
 

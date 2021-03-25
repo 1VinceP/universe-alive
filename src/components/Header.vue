@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { Button, Dropdown } from '@/components/common';
 
 export default {
@@ -9,7 +9,8 @@ export default {
 
    computed: {
       ...mapState('authentication', ['user']),
-      ...mapGetters('authentication', ['isAuthenticated']),
+
+      isAuthenticated() { return this.user.uid; },
 
       userItems() {
          return [
@@ -41,7 +42,6 @@ export default {
 
       <div v-if="isAuthenticated">
          <Dropdown :label="user.username">
-            <Button link class="dropdown-item" to="/profile">Profile</Button>
             <Button link class="dropdown-item" to="/accountsettings">Account Settings</Button>
             <Button full class="dropdown-item logout" @click="logout">Logout</Button>
          </Dropdown>

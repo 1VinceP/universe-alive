@@ -25,13 +25,13 @@ export default {
             <div v-show="required" class="required">*</div>
          </label>
       </span>
-      <div v-show="details" class="details">{{ details }}</div>
+      <div v-show="details" class="details" @click="$emit('update:modelValue', !modelValue)">{{ details }}</div>
    </div>
 </template>
 
 <style lang="scss" scoped>
 .checkbox-wrapper {
-   width: 100%;
+   width: 260px;
    display: flex;
    flex-direction: column;
    font-size: $font-sm;
@@ -51,7 +51,7 @@ export default {
 
       label {
          display: flex;
-         margin-top: 2px;
+         margin-top: 1px;
          cursor: pointer;
 
          .required {

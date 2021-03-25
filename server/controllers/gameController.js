@@ -14,7 +14,7 @@ module.exports = {
       const { id } = req.params;
       try {
          const games = await Game.find({
-            $or: [{ owner_id: id }, { 'players.uid': id }],
+            $or: [{ ownerId: id }, { 'players.uid': id }],
          });
          res.status(200).send(games);
       } catch (error) {
@@ -37,11 +37,44 @@ module.exports = {
 
    createGame: async (req, res) => {
       try {
-         const game = new Game({ ...req.body });
+         const game = new Game({ ...req.body, ownerId: req.session.uid });
          const newGame = await game.save();
          res.status(200).send(newGame);
       } catch (error) {
          res.status(400).send(error);
+      }
+   },
+
+   getGameRelation: async (req, res) => {
+      const { gameId } = req.params;
+      const { uid } = req.session;
+      let status = 200;
+      let relation = 'guest';
+
+      try {
+         const game = await Game.findOne({ _id: gameId });
+
+         if (!req.session || !uid) {
+            if (game.open) relation = 'guest';
+            else {
+               status = 401;
+               relation = null;
+            }
+            res.status(status).send(relation);
+            return;
+         }
+
+         if (game.ownerId === uid) relation = 'owner';
+         else if (game.players.find(player => player.uid === uid)) relation = 'player';
+         else if (game.open) relation = 'guest';
+         else {
+            status = 401;
+            relation = null;
+         }
+
+         res.status(status).send({ relation });
+      } catch (error) {
+         res.status(401).send(error);
       }
    },
 };

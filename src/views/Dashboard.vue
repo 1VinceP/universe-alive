@@ -26,7 +26,7 @@ export default {
       ...mapActions('games', ['getAllUserGames']),
 
       gameAssoc(game) {
-         return this.user.uid === game.owner_id ? 'gm'
+         return this.user.uid === game.ownerId ? 'gm'
             : game.players.find(player => this.user.uid === player.uid) ? 'player'
                : 'guest';
       },

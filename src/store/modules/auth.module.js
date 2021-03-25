@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import ky from 'ky';
 import * as accountTypes from '@/constants/accountTypes.constants';
 
 export default {
@@ -6,10 +7,10 @@ export default {
 
    state: {
       user: {
-         username: 'Test User',
-         uid: '10',
-         accountType: 'admin',
-         email: 'dev@email.com',
+         username: '',
+         uid: '',
+         email: '',
+         accountType: '',
       },
       authError: '',
       userError: '',
@@ -22,7 +23,15 @@ export default {
    },
 
    actions: {
-      async registerUser({ state }, { email, password, username, persist }) {
+      async loginToServer(_, { uid, remember }) {
+         try {
+            await ky.post('/auth/login', { json: { uid, remember } });
+         } catch (error) {
+            console.log(error);
+         }
+      },
+
+      async registerUser({ state, dispatch }, { email, password, username, persist }) {
          state.userLoading = true;
 
          try {
@@ -42,6 +51,8 @@ export default {
             const { user: { uid } } = await firebase.auth().createUserWithEmailAndPassword(email, password);
             await firebase.database().ref(`users/${uid}`).set(user);
 
+            await dispatch('loginToServer', { uid, remember: persist });
+
             state.user = { ...user, uid };
             state.userLoading = false;
             return true;
@@ -52,18 +63,18 @@ export default {
          }
       },
 
-      async loginUser({ state, dispatch }, { email, password }) {
+      async loginUser({ state, dispatch }, { email, password, persist }) {
          state.userLoading = true;
          try {
             const { user: { uid } } = await firebase.auth().signInWithEmailAndPassword(email, password);
 
-            const updateSuccessful = await dispatch('updateUser', {
-               uid,
-               data: { lastLogin: new Date().toJSON() },
-            });
+            const data = { lastLogin: new Date().toJSON() };
+            const updateSuccessful = await dispatch('updateUser', { uid, data });
             if (!updateSuccessful) throw new Error({ message: 'User update failed' });
 
             const appUser = await firebase.database().ref(`users/${uid}`).once('value');
+
+            await dispatch('loginToServer', { uid, remember: persist });
 
             state.user = { ...appUser.val(), uid };
             state.userLoading = false;
@@ -75,10 +86,34 @@ export default {
          }
       },
 
-      async updateUser({ state }, { uid, data }) {
+      async checkSession({ state }) {
+         if (state.user.uid) return true;
+
+         try {
+            const { uid } = await ky('/auth/session').json();
+            if (uid) {
+               const appUser = await firebase.database().ref(`users/${uid}`).once('value');
+               state.user = { ...appUser.val(), uid };
+               return uid;
+            } else {
+               return false;
+            }
+         } catch (error) {
+            console.error(error);
+            return false;
+         }
+      },
+
+      async updateUser({ state }, { uid, data, returnUser }) {
          state.userUpdating = true;
          try {
             await firebase.database().ref(`users/${uid}`).update(data);
+
+            if (returnUser) {
+               const appUser = await firebase.database().ref(`users/${uid}`).once('value');
+               state.user = { ...appUser.val(), uid };
+            }
+
             state.userUpdating = false;
             return true;
          } catch (error) {
@@ -91,6 +126,7 @@ export default {
       async logoutUser({ state }) {
          try {
             await firebase.auth().signOut();
+            await ky.post('/auth/logout');
             state.user = {};
             return true;
          } catch (error) {

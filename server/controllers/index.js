@@ -1,7 +1,7 @@
-const test = require('./testController');
+const auth = require('./authController');
 const game = require('./gameController');
 
 module.exports = {
-   test,
+   auth,
    game,
 };

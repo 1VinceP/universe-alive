@@ -8,6 +8,7 @@ export default {
       modelValue: { type: String, default: '' },
       required: { type: Boolean, default: false },
       noDefault: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
    },
 };
 </script>
@@ -18,10 +19,15 @@ export default {
          {{ label }}
          <div v-show="required" class="required">*</div>
       </div>
-      <select class="select" @change="e => $emit('update:modelValue', e.target.value)">
+      <select
+         class="select"
+         :value="modelValue"
+         :disabled="disabled"
+         @change="e => $emit('update:modelValue', e.target.value)"
+      >
          <template v-if="!noDefault">
             <slot name="init">
-               <option value="">Select</option>
+               <option value="">-- Select --</option>
             </slot>
          </template>
          <slot />
@@ -55,7 +61,9 @@ export default {
       border: 1px solid $grey;
       border-radius: $radius;
       outline: none;
+      text-transform: capitalize;
       &:focus { border: 2px solid $blue; }
+      &[disabled] { background: #e4e4e4; }
    }
 
    .details {
